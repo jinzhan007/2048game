@@ -16,7 +16,7 @@ var style = new PIXI.TextStyle({
     wordWrap: true,
     wordWrapWidth: 440
 });
-var basicText = new PIXI.Text('2048Game',style)
+var basicText = new PIXI.Text('2048 game',style)
 basicText.anchor.set(0.5);
 basicText.x = app.renderer.width / 2;
 basicText.y = app.renderer.height / 6;
@@ -29,10 +29,7 @@ for (var i = 0; i < 4; i++){
 
 for (var i = 0; i < 4; i++){
     for (var j = 0; j < 4; j++){
-        var graphics = new PIXI.Graphics();
-        graphics.beginFill(0xFF700B, 1);
-        graphics.drawRect(app.renderer.width / 8 + j * 77, app.renderer.height / 3  + i * 77, 75, 75);//x, y,width, height
-        app.stage.addChild(graphics);
+        drawCell(i,j);
     }
 }
 
@@ -40,18 +37,37 @@ function generateRandomNumber(){
     return Math.floor(Math.random() * 4);
 }
 
-var columnIndex = generateRandomNumber();
+function drawCell(rowIndex, columnIndex) {
+    var color = 0xFF0000;
+    if (grid[rowIndex][columnIndex] === 2){
+        color = 0xFF700B;
+    }
+
+    var graphics = new PIXI.Graphics();
+    graphics.beginFill(color, 1);
+    graphics.drawRect(app.renderer.width / 8 + columnIndex * 77, app.renderer.height / 3  + rowIndex * 77, 75, 75);//x, y,width, height
+    app.stage.addChild(graphics);
+
+    if (grid[rowIndex][columnIndex] !== 0){
+        var number = new PIXI.Text(grid[rowIndex][columnIndex],{
+            fontSize:30
+        });
+        number.anchor.set(0.5);
+        number.x = 75 / 2 + app.renderer.width / 8 + columnIndex * 77;
+        number.y = 75 / 2 + app.renderer.height / 3 + rowIndex * 77;
+        app.stage.addChild(number);
+    }
+}
+
 var rowIndex = generateRandomNumber();
-var graphics = new PIXI.Graphics();
-graphics.beginFill(0xFF0000, 1);//16jinzhi GRB ARGB
-graphics.drawRect(app.renderer.width / 8 + rowIndex * 77, app.renderer.height / 3  + columnIndex * 77, 75, 75);//x, y,width, height
-app.stage.addChild(graphics);
+var columnIndex = generateRandomNumber();
 
-var number = new PIXI.Text('2',{
-    fontSize:30
+grid[rowIndex][columnIndex] = 2;
+
+drawCell(rowIndex, columnIndex);
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'ArrowRight'){
+        console.log(event);
+    }
 })
-number.anchor.set(0.5);
-number.x = 75 / 2 + app.renderer.width / 8 + rowIndex * 77;
-number.y = 75 / 2 + app.renderer.height / 3 + columnIndex * 77;
-app.stage.addChild(number);
-
