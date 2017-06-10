@@ -25,7 +25,7 @@ app.stage.addChild(basicText);
 
 var grid = [];
 for (var i = 0; i < 4; i++){
-    grid[i] = [0,0,0,0];
+    grid[i] = [2,2,0,0];
 }
 
 var flushUI = function () {
@@ -89,17 +89,18 @@ function moveCellToRight() {
                 continue;
 
             var theEmptyCellIndex = findTheFirstRightCell(rowIndex,columnIndex);
-            if (theEmptyCellIndex !== -1){
+            if (theEmptyCellIndex !== -1) {
                 grid[rowIndex][theEmptyCellIndex] = grid[rowIndex][columnIndex];
                 grid[rowIndex][columnIndex] = 0;
+            }
+            var currentIndex = theEmptyCellIndex === -1 ? columnIndex : theEmptyCellIndex;//-1：右边没有00；
 
-                if (grid[rowIndex][theEmptyCellIndex] === grid[rowIndex][theEmptyCellIndex + 1]){
-                    grid[rowIndex][theEmptyCellIndex] += grid[rowIndex][theEmptyCellIndex + 1];
-                    grid[rowIndex][columnIndex] = 0;
+            if (grid[rowIndex][currentIndex] === grid[rowIndex][currentIndex + 1]){
+                    grid[rowIndex][currentIndex + 1] += grid[rowIndex][currentIndex ];
+                    grid[rowIndex][currentIndex] = 0;
                 }
             }
         }
-    }
 }
 
 function findTheFirstRightCell(rowIndex, columnIndex) {
@@ -108,6 +109,5 @@ function findTheFirstRightCell(rowIndex, columnIndex) {
             return i;
         }
     }
-
     return -1;
 }
