@@ -20,7 +20,7 @@ for (var i = 0; i < 4; i++){
     for (var j = 0; j < 4; j++){
         var graphics = new PIXI.Graphics();
         graphics.beginFill(0xFF700B, 1);
-        graphics.drawRect(200 + j * 60, 200  + i * 60, 50, 50);//x, y,width, height
+        graphics.drawRect(app .renderer.width / 6 + j * 60, app .renderer.height / 3  + i * 60, 50, 50);//x, y,width, height
         app.stage.addChild(graphics);
     }
 }
