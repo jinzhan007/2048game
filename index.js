@@ -25,7 +25,7 @@ app.stage.addChild(basicText);
 
 var grid = [];
 for (var i = 0; i < 4; i++){
-    grid[i] = [2,2,0,0];
+    grid[i] = [0,0,0,0];
 }
 
 var flushUI = function () {
@@ -62,23 +62,59 @@ function getColorByNumber(number) {
     var colorValue = {
         0:0x00FF00,
         2:0xFF0000,
-        4:0x0000FF
+        4:0x0000FF,
+        8:0xFFF000,
     };
 
-    return colorValue[number];
+    var color = colorValue[number];
+    if (color === undefined){
+        color = 0xFF0FFF;
+    }
+    return color;
 }
 
-var rowIndex = generateRandomNumber();
-var columnIndex = generateRandomNumber();
+var addRandomCell = function () {
+    var rowIndex = generateRandomNumber();
+    var columnIndex = generateRandomNumber();
 
-grid[rowIndex][columnIndex] = 2;
+    while (grid[rowIndex][columnIndex] !== 0){
+        rowIndex = generateRandomNumber;
+        columnIndex = generateRandomNumber;
+    }
+    grid[rowIndex][columnIndex] = 2;
+};
 
-drawCell(rowIndex, columnIndex);
+addRandomCell();
+addRandomCell();
+
+flushUI();
 
 document.addEventListener('keydown', function (event) {
     if (event.key === 'ArrowRight'){
+       addRandomCell();
        moveCellToRight();
        flushUI();
+    }
+    if (event.key === 'ArrowLeft'){
+        rotateArray(2);
+        moveCellToRight();
+        rotateArray(2);
+        addRandomCell();
+        flushUI();
+    }
+    if (event.key === 'ArrowUp'){
+        rotateArray(1);
+        moveCellToRight();
+        rotateArray(3);
+        addRandomCell();
+        flushUI();
+    }
+    if (event.key === 'ArrowDown'){
+        rotateArray(3);
+        moveCellToRight();
+        rotateArray(1);
+        addRandomCell();
+        flushUI();
     }
 });
 
@@ -90,10 +126,10 @@ function moveCellToRight() {
 
             var theEmptyCellIndex = findTheFirstRightCell(rowIndex,columnIndex);
             if (theEmptyCellIndex !== -1) {
-                grid[rowIndex][theEmptyCellIndex] = grid[rowIndex][columnIndex];
+                grid[rowIndex][theEmptyCellIndex] = grid[rowIndex][columnIndex];//2  0->0  2
                 grid[rowIndex][columnIndex] = 0;
             }
-            var currentIndex = theEmptyCellIndex === -1 ? columnIndex : theEmptyCellIndex;//-1：右边没有00；
+            var currentIndex = theEmptyCellIndex === -1 ? columnIndex : theEmptyCellIndex;//-1：右边没有0；
 
             if (grid[rowIndex][currentIndex] === grid[rowIndex][currentIndex + 1]){
                     grid[rowIndex][currentIndex + 1] += grid[rowIndex][currentIndex ];
@@ -110,4 +146,18 @@ function findTheFirstRightCell(rowIndex, columnIndex) {
         }
     }
     return -1;
+}
+
+function rotateArray(rotateCount = 1) {
+    for (var i = 0 ; i < rotateCount; i ++) {
+        grid = rotateArrayToRightOnce(grid);
+    }
+
+    function rotateArrayToRightOnce(array) {
+        return array.map((row, rowIndex) => {
+                return row.map((item, columnIndex) => {
+                    return array[3 - columnIndex][rowIndex];
+    })
+    })
+    }
 }
