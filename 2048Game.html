@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script  src = " https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js" > </script>
+
+    <style>
+        body{
+            margin: 0px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<script>
+    var app = new PIXI.Application(1500, 700, {backgroundColor: 0x1099bb});
+    document.body.appendChild(app.view);
+
+    var basicText = new PIXI.Text('2048Game');
+    basicText.x = 30;
+    basicText.y = 90;
+app.stage.addChild(basicText);
+</script>
+
+
+
+
+
+
+</body>
+</html>
